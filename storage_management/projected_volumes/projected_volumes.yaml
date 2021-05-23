@@ -20,7 +20,7 @@ spec:
       projected:
         sources:
           - secret:
-              name: username
+              name: my-secret
               items:
                 - key: username
                   path: /var/secrets/username
@@ -38,3 +38,23 @@ spec:
               items:
                 - key: config.yaml
                   path: /config.yaml
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: my-secret
+type: Opaque
+data:
+  username: test
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: the-configmap
+  labels:
+    app: my-application
+data:
+  config.yaml: |-
+    debug: true
