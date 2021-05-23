@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: the-pod
+  labels:
+    name: the-pod
+spec:
+  containers:
+    - name: the-pod
+      image: busybox
+      resources:
+        limits:
+          memory: "128Mi"
+          cpu: "500m"
+      volumeMounts:
+        - name: all-in-one
+          mountPath: /projected-volume
+  volumes:
+    - name: all-in-one
+      projected:
+        sources:
+          - secret:
+              name: username
+              items:
+                - key: username
+                  path: /var/secrets/username
+          - downwardAPI:
+              items:
+                - path: "labels"
+                  fieldRef:
+                    fieldPath: metadata.labels
+                - path: cpu_limit
+                  resourceFieldRef:
+                    resource: limits.cpu
+                    containerName: the-container
+          - configMap:
+              name: the-configmap
+              items:
+                - key: config.yaml
+                  path: /config.yaml
