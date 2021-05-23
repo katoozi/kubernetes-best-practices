@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: some-pod
+  labels:
+    name: some-pod
+spec:
+  containers:
+    - name: some-pod
+      image: busybox
+      resources:
+        limits:
+          memory: "128Mi"
+          cpu: "500m"
+      volumeMounts:
+        - name: gpd
+          mountPath: /mnt
+  volumes:
+    - name: gpd
+      gcePersistentDisk:
+        pdName: <persistent disk name>
+        fsType: ext4
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: test-volume
+  labels:
+    failure-domain.beta.kubernetes.io/zone: us-central1-a__us-centrals-b
+spec:
+  capacity:
+    storage: 400Gi
+  accessModes:
+    - ReadWriteOnce
+  gcePersistentDisk:
+    pdName: data-disk
+    fsType: ext4

@@ -1,0 +1,16 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: factorial5
+  namespace: default
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: factorial5
+              image: g1g1/py-kube:0.2
+              command: ["python", "-c", "import math; print(math.factorial(5))"]
+          restartPolicy: OnFailure

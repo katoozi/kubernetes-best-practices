@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: some-pod
+  labels:
+    name: some-pod
+spec:
+  containers:
+    - name: some-pod
+      image: busybox
+      resources:
+        limits:
+          memory: "128Mi"
+          cpu: "500m"
+      volumeMounts:
+        - name: data_disk
+          mountPath: /mnt
+  volumes:
+    - name: data_disk
+      azureDisk:
+        diskURI: test.vhd
+        diskName: https://someaccount.blob.microsoft.net/vhds/test.vhd
+        fsType: ext4
+        readOnly: false
+        cachingMode: None
+        kind: Shared

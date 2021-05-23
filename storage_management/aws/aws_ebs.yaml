@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: some-pod
+  labels:
+    name: some-pod
+spec:
+  containers:
+    - name: some-pod
+      image: busybox
+      resources:
+        limits:
+          memory: "128Mi"
+          cpu: "500m"
+      volumeMounts:
+        - mountPath: /ebs
+          name: some-volume
+  volumes:
+    - name: some-volume
+      awsElasticBlockStore:
+        volumeID: <volume_id>
+        fsType: ext4

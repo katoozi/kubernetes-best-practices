@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hue-learner
+  labels:
+    name: hue-learner
+spec:
+  containers:
+    - name: hue-learner
+      image: g1g1/hue-learn:0.4
+      resources:
+        limits:
+          memory: "128Mi"
+          cpu: "500m"

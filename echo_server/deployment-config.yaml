@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: echoserver-deployment
+  labels:
+    app: echoserver
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: echoserver
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: echoserver
+    spec:
+      containers:
+        - name: echoserver
+          image: gcr.io/google_containers/echoserver:1.8
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: "250m"
+              memory: "100Mi"

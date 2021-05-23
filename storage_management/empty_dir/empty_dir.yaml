@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hue-scheduler
+  labels:
+    name: hue-scheduler
+spec:
+  containers:
+    - name: hue-scheduler
+      image: busybox
+      resources:
+        limits:
+          memory: "128Mi"
+          cpu: "500m"
+      volumeMounts:
+        - mountPath: /notifications
+          name: shared-volume
+    - name: hue-scheduler-listener
+      image: busybox
+      resources:
+        limits:
+          memory: "128Mi"
+          cpu: "500m"
+      volumeMounts:
+        - mountPath: /jobs
+          name: shared-volume
+  volumes:
+    - name: shared-volume
+      emptyDir:
+        medium: Memory

@@ -1,0 +1,22 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: test_deployment
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        editor: vscode
+    spec:
+      containers:
+        - name: my_container
+          image: busybox
+          resources:
+            limits:
+              cpu: 250m
+              memory: 100M
+      initContainers:
+        - name: nslookup
+          image: checker
+          command: ["sh", "-c", "/usr/bin/nslookup test.com"]

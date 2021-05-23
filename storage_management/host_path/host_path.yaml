@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hue-coupon-hunter
+  labels:
+    name: hue-coupon-hunter
+spec:
+  containers:
+    - name: hue-coupon-hunter
+      image: busybox
+      resources:
+        limits:
+          memory: "128Mi"
+          cpu: "500m"
+      volumeMounts:
+        - mountPath: /coupons
+          name: coupons-volume
+      securityContext:
+        privileged: true
+  volumes:
+    - name: coupons-volume
+      hostPath:
+        path: /etc/hue/data/coupons

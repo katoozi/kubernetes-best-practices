@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hue-music
+  labels:
+    app: music
+    service: music
+spec:
+  containers:
+    - name: hue-music
+      image: busybox
+      resources:
+        limits:
+          memory: "128Mi"
+          cpu: "500m"
+      readinessProbe:
+        exec:
+          command:
+            - "/usr/bin/app check-db --full-check" # if this command exists with non-zero code, than the container will bring down by kubernetes
+            # our service depend on database to serve requests, if db is not available, so we can't serve requests, so bring down the container
+        initialDelaySeconds: 10
+        timeoutSeconds: 5

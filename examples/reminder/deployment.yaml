@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hue
+  labels:
+    app: hue
+    service: reminder
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: hue
+      service: reminder
+  template:
+    metadata:
+      labels:
+        app: hue
+        service: reminder
+    spec:
+      affinity:
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: role
+                    operator: In
+                    values:
+                      - "trouble-shooter"
+              topologyKey: failure-domain.beta.kubernetes.io/zone
+      containers:
+        - name: hue
+          image: g1g1/hue-reminders:3.0
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 8080

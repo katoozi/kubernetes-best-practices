@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my_pod
+  labels:
+    name: my_pod
+spec:
+  containers:
+    - name: my_pod
+      image: busybox
+      resources:
+        limits:
+          memory: "128Mi"
+          cpu: "500m"
+
+  readinessGates:
+    - conditionType: Ready
+status:
+  conditions:
+    - type: Ready
+      status: "False"
+      lastProbeTime: 2018-01-01T00:00:00Z
+      lastTransitionTime: 2018-01-01T00:00:00Z
+  containerStatuses:
+    - containerID: docker://abcd...
+      name: Ready
+      imageID: "73247324234"
+      image: busybox
+      ready: True
+      restartCount: 1

@@ -1,0 +1,20 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: hue-reminder
+  labels:
+    app: hue
+    service: reminder
+spec:
+  selector:
+    app: hue
+    service: reminder
+  type: NodePort
+  ports:
+    - port: 8080
+      protocol: TCP
+      name: http
+      targetPort: 8080
+    - port: 443
+      protocol: TCP
+      name: https

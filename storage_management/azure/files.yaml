@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: azure-file-secret
+type: Opaque
+data:
+  azurestorageaccountname: <base64 encoded account name>
+  azurestorageaccountkey: <base64 encoded account key>
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: some-pod
+  labels:
+    name: some-pod
+spec:
+  containers:
+    - name: some-pod
+      image: busybox
+      resources:
+        limits:
+          memory: "128Mi"
+          cpu: "500m"
+      volumeMounts:
+        - name: some-volume
+          mountPath: /azure
+  volumes:
+    - name: some-volume
+      azureFile:
+        shareName: azure-share
+        secretName: azure-secret-file
+        readOnly: false

@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: the-container
+  labels:
+    name: the-container
+spec:
+  containers:
+    - name: the-container
+      image: busybox
+      resources:
+        limits:
+          memory: "128Mi"
+          cpu: "500m"
+      volumeMounts:
+        - mountPath: "/mnt/data"
+          name: persistance-storage
+  volumes:
+    - name: persistance-storage
+      persistentVolumeClaim:
+        claimName: local-storage
