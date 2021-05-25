@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:latest
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 80
+# Note that in order to participate in autoscaling, the containers must request a specific amount of CPU.
+
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: nginx
+spec:
+  maxReplicas: 4
+  minReplicas: 2
+  targetCPUUtilizationPercentage: 90
+  scaleTargetRef:
+    kind: Deployment
+    name: nginx
+    apiVersion: apps/v1
+
+---
+# autoscale with kubectl
+#  kubectl autoscale deployment nginx --min=2 --max=4 --cpu-percent=90
