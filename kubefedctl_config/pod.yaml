@@ -1,0 +1,23 @@
+apiVersion: types.kubefed.io/v1beta1
+kind: FederatedPod
+metadata:
+  name: trouble
+  labels:
+    name: trouble
+spec:
+  placement:
+    clusterSelector:
+      matchLabels: {}
+  template:
+    metadata:
+      labels:
+        run: trouble
+  containers:
+    - name: trouble
+      image: busybox
+      resources:
+        limits:
+          memory: "128Mi"
+          cpu: "500m"
+      ports:
+        - containerPort: 80
